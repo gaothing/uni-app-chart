@@ -1,0 +1,110 @@
+<template>
+	<view class="page" ref='pp'>
+		<gcanvas class="canvas" ref="gcanvess" :style="{height: canvasHeight+'rpx'}"> </gcanvas>
+
+	</view>
+</template>
+
+<script>
+	import {
+		enable,
+		WeexBridge
+	} from '../../gcanvas/index.js';
+	import option from './option.js'
+
+	import drawLine from './comm/Axis.js'
+	import line from './comm/line.js'
+	import defaultStyle from './comm/defaultStyle.js'
+	//demo曲线测试
+	import quxianTest from './comm/quxianDemo.js'
+	export default {
+		data() {
+			return {
+				context: {},
+				canvasHeight: 300
+			}
+		},
+		onReady: function(e) {
+			/*获取元素引用*/
+			var ganvas = this.$refs["gcanvess"];
+			/*通过元素引用获取canvas对象*/
+			this.canvasObj = enable(ganvas, {
+				bridge: WeexBridge
+			});
+			const systemInfo = uni.getSystemInfoSync()
+			/*获取绘图所需的上下文，目前不支持3d*/
+			const context = this.canvasObj.getContext('2d');
+			context.width = systemInfo.windowWidth
+			context.height = systemInfo.windowWidth * this.canvasHeight / 750;
+			
+			console.log(context.height)
+			// quxianTest(context);
+			// 曲线
+			let options = {
+				context,
+				yAxis: option.yAxis[0],
+				xAxis: option.xAxis[0],
+				data:[...new Array(50).fill("").map(v => Math.random() * 20 + 20), ...new Array(50).fill("").map(v => Math.random() *
+					20 + 40), 120, ...new Array(49).fill("").map(v => Math.random() * 20 + 60)]
+			}
+
+			// setInterval(() => {
+				options.data.shift()
+				options.data.push(Math.random() * 20 + 60)
+				line(options);
+				
+			// }, 5)
+
+
+		},
+		onShow() {
+			// this.testSocket()
+		},
+		methods: {
+			testSocket() {
+				console.log(1)
+				if (plus.os.name == "Android") {
+					var Socket = plus.android.importClass("java.net.Socket");
+					var PrintWriter = plus.android.importClass("java.io.PrintWriter");
+					var BufferedWriter = plus.android.importClass("java.io.BufferedWriter");
+					var OutputStreamWriter = plus.android.importClass("java.io.OutputStreamWriter");
+					var BufferedReader = plus.android.importClass("java.io.BufferedReader");
+					var InputStreamReader = plus.android.importClass("java.io.InputStreamReader");
+
+					//测试改良  
+					var StrictMode = plus.android.importClass("android.os.StrictMode");
+					var Build = plus.android.importClass("android.os.Build");
+					if (Build.VERSION.SDK_INT > 9) {
+						var policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+						StrictMode.setThreadPolicy(policy);
+					}
+					console.log("连接服务器中...")
+					var socket = new Socket("192.168.1.16", 3000);
+					socket.setSoTimeout(5000);
+					var inputStreamReader = new InputStreamReader(socket.getInputStream());
+					var socketReader = new BufferedReader(inputStreamReader);
+
+					var outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
+					var bufferWriter = new BufferedWriter(outputStreamWriter);
+					var socketWriter = new PrintWriter(bufferWriter, true);
+					socketWriter.println("发送的消息");
+					var msgBeReceived = socketReader.readLine();
+					console.log(msgBeReceived);
+
+				}
+			}
+		}
+	}
+</script>
+
+<style>
+	.page {
+		background-color: #eee;
+	}
+
+	.canvas {
+		width: 750rpx;
+		/* height: 300rpx; */
+		margin-bottom: 10rpx;
+	}
+</style>
