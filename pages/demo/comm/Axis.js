@@ -5,10 +5,10 @@ export default (option) => {
 		end,
 		styles
 	} = option;
-	context.setStrokeStyle(styles.StrokeStyle)
-	context.setLineWidth(styles. LineWidth)
-	context.moveTo(start.x, start.y)
-	context.lineTo(end.x,end.y)
+	context.beginPath();
+	context.setStrokeStyle(styles.StrokeStyle);
+	context.setLineWidth(styles.LineWidth);
+	context.moveTo(start.x, start.y);
+	context.lineTo(end.x, end.y);
 	context.stroke()
 }
-

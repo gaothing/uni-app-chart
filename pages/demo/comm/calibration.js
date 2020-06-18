@@ -1,30 +1,41 @@
 export default (option) => {
 	const {
 		context,
-		start,
-		end,
+		left,
+		top,
+		right,
+		bottom,
+		width,
+		height,
 		styles,
-		xAxis,
-		yAxis,
-		data
+		xAxisV,
+		yAxisV,
+		gridV,
+		seriesV
 	} = option;
+	const data = seriesV[0].data;
 	// x轴刻度值
-	if (xAxis.data.length == data.length && xAxis.show) {
-		let xRange = (context.width - styles.xAxisPad) / (data.length - 1)
-		context.setFontSize(styles.fontSize)
-		const dur = Math.floor(data.length / ((context.width - styles.xAxisPad) / (20 + styles.fontSize)))
-		xAxis.data.forEach((v, i) => {
-			(i % dur == 0) &&
-			context.fillText(v, i * xRange + styles.yAxisPad, context.height);
+	if (xAxisV.data.length == data.length && xAxisV.show) {
+		let xRange = width / (data.length - 1);
+		context.beginPath();
+		context.setFontSize(styles.fontSize);
+
+		xAxisV.data.forEach((item, j) => {
+			(j == 0 || (j + 1) % xAxisV.dur == 0) && context.fillText(item, j * xRange + left - styles.fontSize / 2, height +
+				top +
+				styles.fontSize);
 		})
+		context.stroke()
 	}
-	// y轴刻度值
-	if (yAxis.show) {
-		// y轴比例
-		let dur = Math.floor((yAxis.max - yAxis.min) / yAxis.dur) + 1
-		let yRange = Math.floor((context.height - styles.yAxisPad) / dur)
+	if (yAxisV.show) {
+		let dur = Math.ceil((yAxisV.max - yAxisV.min) / yAxisV.dur) + 1;
+		let yRange = height / ((yAxisV.max - yAxisV.min) / yAxisV.dur);
 		for (let i = 0; i < dur; i++) {
-			context.fillText((yAxis.min + i * yAxis.dur).toString(), 0, context.height - styles.yAxisPad - i * yRange)
+			context.beginPath();
+			context.setFontSize(styles.fontSize);
+			context.fillText((yAxisV.min + i * yAxisV.dur).toString(), 0, height + top + styles.fontSize / 2 - i * yRange)
 		}
+		context.stroke()
 	}
+
 }

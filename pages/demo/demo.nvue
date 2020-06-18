@@ -1,7 +1,6 @@
 <template>
-	<view class="page" ref='pp'>
-		<gcanvas class="canvas" ref="gcanvess" :style="{height: canvasHeight+'rpx'}"> </gcanvas>
-
+	<view class="page">
+		<gcanvas class="canvas" ref="gcanvess"> </gcanvas>
 	</view>
 </template>
 
@@ -21,7 +20,7 @@
 		data() {
 			return {
 				context: {},
-				canvasHeight: 300
+				canvasHeight: 800
 			}
 		},
 		onReady: function(e) {
@@ -36,26 +35,15 @@
 			const context = this.canvasObj.getContext('2d');
 			context.width = systemInfo.windowWidth
 			context.height = systemInfo.windowWidth * this.canvasHeight / 750;
-			
-			console.log(context.height)
-			// quxianTest(context);
-			// 曲线
-			let options = {
-				context,
-				yAxis: option.yAxis[0],
-				xAxis: option.xAxis[0],
-				data:[...new Array(50).fill("").map(v => Math.random() * 20 + 20), ...new Array(50).fill("").map(v => Math.random() *
-					20 + 40), 120, ...new Array(49).fill("").map(v => Math.random() * 20 + 60)]
-			}
 
-			// setInterval(() => {
-				options.data.shift()
-				options.data.push(Math.random() * 20 + 60)
-				line(options);
-				
-			// }, 5)
+			setInterval(() => {
+				option.series[0].data.shift()
+				option.series[0].data.push(Math.random() * 20 + 40)
+				option.series[1].data.shift()
+				option.series[1].data.push(Math.random() * 20 + 20)
+				line(context, option);
 
-
+			}, 50)
 		},
 		onShow() {
 			// this.testSocket()
@@ -90,21 +78,23 @@
 					socketWriter.println("发送的消息");
 					var msgBeReceived = socketReader.readLine();
 					console.log(msgBeReceived);
-
 				}
 			}
 		}
 	}
 </script>
 
-<style>
+<style scoped>
 	.page {
-		background-color: #eee;
+		width: 750upx;
+		height: 800upx;
+		background-color: #fff;
 	}
 
 	.canvas {
-		width: 750rpx;
-		/* height: 300rpx; */
-		margin-bottom: 10rpx;
+		width: 750upx;
+		height: 800px;
+		background-color: #EEEEAE;
+		/* margin-bottom: 10upx; */
 	}
 </style>
