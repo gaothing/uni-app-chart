@@ -36,7 +36,7 @@ createImage|✅
 requestAnimationFrame|❌
 CanvasGradient|✅
 Color|✅
-Image|✅
+Image|✅ 
 OffscreenCanvas|❌
 * CanvasContext API
 

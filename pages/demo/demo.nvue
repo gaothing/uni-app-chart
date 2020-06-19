@@ -23,6 +23,7 @@
 				canvasHeight: 800
 			}
 		},
+
 		onReady: function(e) {
 			/*获取元素引用*/
 			var ganvas = this.$refs["gcanvess"];
@@ -39,47 +40,16 @@
 			setInterval(() => {
 				option.series[0].data.shift()
 				option.series[0].data.push(Math.random() * 20 + 40)
-				option.series[1].data.shift()
-				option.series[1].data.push(Math.random() * 20 + 20)
+				// option.series[1].data.shift()
+				// option.series[1].data.push(Math.random() * 20 + 20)
 				line(context, option);
-
-			}, 50)
+			}, 500)
 		},
 		onShow() {
-			// this.testSocket()
+			// this.socket()
 		},
 		methods: {
-			testSocket() {
-				console.log(1)
-				if (plus.os.name == "Android") {
-					var Socket = plus.android.importClass("java.net.Socket");
-					var PrintWriter = plus.android.importClass("java.io.PrintWriter");
-					var BufferedWriter = plus.android.importClass("java.io.BufferedWriter");
-					var OutputStreamWriter = plus.android.importClass("java.io.OutputStreamWriter");
-					var BufferedReader = plus.android.importClass("java.io.BufferedReader");
-					var InputStreamReader = plus.android.importClass("java.io.InputStreamReader");
 
-					//测试改良  
-					var StrictMode = plus.android.importClass("android.os.StrictMode");
-					var Build = plus.android.importClass("android.os.Build");
-					if (Build.VERSION.SDK_INT > 9) {
-						var policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-						StrictMode.setThreadPolicy(policy);
-					}
-					console.log("连接服务器中...")
-					var socket = new Socket("192.168.1.16", 3000);
-					socket.setSoTimeout(5000);
-					var inputStreamReader = new InputStreamReader(socket.getInputStream());
-					var socketReader = new BufferedReader(inputStreamReader);
-
-					var outputStreamWriter = new OutputStreamWriter(socket.getOutputStream());
-					var bufferWriter = new BufferedWriter(outputStreamWriter);
-					var socketWriter = new PrintWriter(bufferWriter, true);
-					socketWriter.println("发送的消息");
-					var msgBeReceived = socketReader.readLine();
-					console.log(msgBeReceived);
-				}
-			}
 		}
 	}
 </script>

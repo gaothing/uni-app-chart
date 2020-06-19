@@ -5,7 +5,11 @@
 			"style": {
 				"navigationBarTitleText": "uni-canvas"
 			}
-		},{
+		}, {
+			"path": "pages/test/test",
+			"style": {}
+
+		}, {
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "uni-canvas"
@@ -28,12 +32,12 @@
 			"style": {
 				"navigationBarTitleText": "webGL"
 			}
+		}, {
+			"path": "pages/demo/demo",
+			"style": {}
 		}
-	    ,{
-            "path" : "pages/demo/demo",
-            "style" : {}
-        }
-    ],
+
+	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",

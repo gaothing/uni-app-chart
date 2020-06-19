@@ -30,7 +30,13 @@ export default (option) => {
 		context.beginPath();
 		context.setStrokeStyle(lineColor);
 		context.setLineWidth(lineWidth);
-		context.moveTo(startPoint.x, startPoint.y);
+		if (item.type == 'area') {
+			context.moveTo(left, top + height);
+			context.setFillStyle(lineColor);
+			context.lineTo(startPoint.x, startPoint.y);
+		} else {
+			context.moveTo(startPoint.x, startPoint.y);
+		}
 		for (let i = 1; i < data.length; i++) {
 			let endPoint = {
 				x: left + xRange * i,
@@ -109,10 +115,19 @@ export default (option) => {
 			} else {
 				context.lineTo(endPoint.x, endPoint.y)
 			}
+
 			startPoint = JSON.parse(JSON.stringify(endPoint))
 		}
-		context.moveTo(0, 0);
-		context.stroke()
+		// context.moveTo(0, 0);
+		if (item.type === 'area') {
+			context.lineTo(left + width, top + height);
+			context.lineTo(left, top + height);
+			context.fill()
+			context.stroke()
+		} else {
+			context.moveTo(left + width, top + height);
+			context.stroke()
+		}
 	})
 	// })
 }
